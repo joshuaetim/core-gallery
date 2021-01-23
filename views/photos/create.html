@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+
+{% block title %}{{title}}{% endblock title %}
+
+{% block head %}
+    {{ parent() }}
+    <style>
+        .container{
+            position: relative;
+            margin: 3em auto;
+            padding: 5px 20px;
+            width: 60%;
+        }
+    </style>
+{% endblock head %}
+
+{% block content %}
+    <div class="container">
+        <section>
+            <h2>Upload Image Content</h2>
+            <form method="post" action="add" enctype="multipart/form-data">
+                <input type="hidden" name="MAX_FILE_SIZE" value="2097152">
+                <div class="fields">
+                    <div class="field">
+                        <input type="text" name="title" id="name" placeholder="Title" />
+                        <small>Give the image an intriguing title</small>
+                    </div>
+                    <div class="field">
+                        <textarea name="description" id="description" rows="4" placeholder="description"></textarea>
+                        <small>Brief Description about the image</small>
+                    </div>
+                    <div class="field">
+                        <input type="file" name="file" id="file" placeholder="file" />
+                        <br><small>Upload the image</small>
+                    </div>
+                </div>
+                <ul class="actions">
+                    <li><input type="submit" value="Send" class="primary" /></li>
+                    <li><input type="reset" value="Reset" /></li>
+                </ul>
+            </form>
+        </section>
+    </div>
+{% endblock content %}
