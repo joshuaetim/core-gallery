@@ -4,65 +4,44 @@
     {{title}}
 {% endblock title %}
 
+{% block head %}
+    {{ parent() }}
+
+    <style>
+        .action-bg{
+            background-color: greenyellow;
+            padding: 10px 20px;
+            color: black;
+            margin-right: 5px;
+            font-weight: bolder;
+        }
+
+        .danger{
+            background-color: rgb(214, 27, 27);
+            color: white;
+        }
+
+        .text-bg{
+            background-color: rgba(255, 255, 240, 0.8);
+            padding: 10px 20px;
+            color: black !important;
+            font-weight: bold;
+        }
+    </style>
+{% endblock head %}
+
 {% block content %}
-<article class="thumb">
-    <a href="images/fulls/01.jpg" class="image"><img src="images/thumbs/01.jpg" alt="" /></a>
-    <h2>Magna feugiat lorem</h2>
-    <p>Nunc blandit nisi ligula magna sodales lectus elementum non. Integer id venenatis velit.</p>
-</article>
-<article class="thumb">
-    <a href="images/fulls/02.jpg" class="image"><img src="images/thumbs/02.jpg" alt="" /></a>
-    <h2>Nisl adipiscing</h2>
-    <p>Nunc blandit nisi ligula magna sodales lectus elementum non. Integer id venenatis velit.</p>
-</article>
-<article class="thumb">
-    <a href="images/fulls/03.jpg" class="image"><img src="images/thumbs/03.jpg" alt="" /></a>
-    <h2>Tempus aliquam veroeros</h2>
-    <p>Nunc blandit nisi ligula magna sodales lectus elementum non. Integer id venenatis velit.</p>
-</article>
-<article class="thumb">
-    <a href="images/fulls/04.jpg" class="image"><img src="images/thumbs/04.jpg" alt="" /></a>
-    <h2>Aliquam ipsum sed dolore</h2>
-    <p>Nunc blandit nisi ligula magna sodales lectus elementum non. Integer id venenatis velit.</p>
-</article>
-<article class="thumb">
-    <a href="images/fulls/05.jpg" class="image"><img src="images/thumbs/05.jpg" alt="" /></a>
-    <h2>Cursis aliquam nisl</h2>
-    <p>Nunc blandit nisi ligula magna sodales lectus elementum non. Integer id venenatis velit.</p>
-</article>
-<article class="thumb">
-    <a href="images/fulls/06.jpg" class="image"><img src="images/thumbs/06.jpg" alt="" /></a>
-    <h2>Sed consequat phasellus</h2>
-    <p>Nunc blandit nisi ligula magna sodales lectus elementum non. Integer id venenatis velit.</p>
-</article>
-<article class="thumb">
-    <a href="images/fulls/07.jpg" class="image"><img src="images/thumbs/07.jpg" alt="" /></a>
-    <h2>Mauris id tellus arcu</h2>
-    <p>Nunc blandit nisi ligula magna sodales lectus elementum non. Integer id venenatis velit.</p>
-</article>
-<article class="thumb">
-    <a href="images/fulls/08.jpg" class="image"><img src="images/thumbs/08.jpg" alt="" /></a>
-    <h2>Nunc vehicula id nulla</h2>
-    <p>Nunc blandit nisi ligula magna sodales lectus elementum non. Integer id venenatis velit.</p>
-</article>
-<article class="thumb">
-    <a href="images/fulls/09.jpg" class="image"><img src="images/thumbs/09.jpg" alt="" /></a>
-    <h2>Neque et faucibus viverra</h2>
-    <p>Nunc blandit nisi ligula magna sodales lectus elementum non. Integer id venenatis velit.</p>
-</article>
-<article class="thumb">
-    <a href="images/fulls/10.jpg" class="image"><img src="images/thumbs/10.jpg" alt="" /></a>
-    <h2>Mattis ante fermentum</h2>
-    <p>Nunc blandit nisi ligula magna sodales lectus elementum non. Integer id venenatis velit.</p>
-</article>
-<article class="thumb">
-    <a href="images/fulls/11.jpg" class="image"><img src="images/thumbs/11.jpg" alt="" /></a>
-    <h2>Sed ac elementum arcu</h2>
-    <p>Nunc blandit nisi ligula magna sodales lectus elementum non. Integer id venenatis velit.</p>
-</article>
-<article class="thumb">
-    <a href="images/fulls/12.jpg" class="image"><img src="images/thumbs/12.jpg" alt="" /></a>
-    <h2>Vehicula id nulla dignissim</h2>
-    <p>Nunc blandit nisi ligula magna sodales lectus elementum non. Integer id venenatis velit.</p>
-</article>
+    <div id="main">
+        {% for photo in photos %}
+            <article class="thumb">
+                <a href="/storage/{{photo.photo}}" class="image"><img src="/storage/thumbnails/{{photo.photo}}" alt="" /></a>
+                <h2 class="text-bg">{{photo.title}}</h2>
+                <p class="text-bg">{{photo.description}}.</p>
+                <p><a href="/edit/{{photo.id}}" class="action-bg">Edit</a>
+                <a href="/delete/{{photo.id}}" class="action-bg danger" onclick="event.preventDefault(); var x = confirm('Are you sure to delete?'); if(x){document.getElementById('{{photo.id}}').submit()}">Delete</a></p>
+                <form action="delete/{{photo.id}}" method="post" id="{{photo.id}}">
+                </form>
+            </article>
+        {% endfor %}
+    </div>
 {% endblock content %}
