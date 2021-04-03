@@ -70,7 +70,7 @@ class PhotoController extends BaseController
                 if($path = PhotoHandler::uploadFile($file)){
                     // db store
                     new Database();
-                    $thumb = PhotoHandler::createThumbnail($path);
+                    // $thumb = PhotoHandler::createThumbnail($path);
                     $photo = Photo::create([
                         'title' => $input['title'],
                         'description' => $input['description'],

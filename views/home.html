@@ -34,7 +34,7 @@
     <div id="main">
         {% for photo in photos %}
             <article class="thumb">
-                <a href="/storage/{{photo.photo}}" class="image"><img src="/storage/thumbnails/{{photo.photo}}" alt="" /></a>
+                <a href="/storage/{{photo.photo}}" class="image"><img src="/storage/{{photo.photo}}" alt="" /></a>
                 <h2 class="text-bg">{{photo.title}}</h2>
                 <p class="text-bg">{{photo.description}}.</p>
                 <p><a href="/edit/{{photo.id}}" class="action-bg">Edit</a>
