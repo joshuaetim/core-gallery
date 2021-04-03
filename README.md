@@ -1,6 +1,10 @@
 # BlogCore
 
-BlogCore is a poorly named photo gallery application, built using several PHP components as opposed to using a framework.
+BlogCore is a basic photo CRUD app, built using several PHP components as opposed to using a framework.
+
+## Online Demo
+
+https://tempcore.herokuapp.com/
 
 ## Local Installation
 
@@ -35,11 +39,11 @@ The app features are:
 - Creation of thumbnails from images
 - Edit and Delete Images
 - Efficient templating system for View Separation (with Twig)
-- Expressive File Handler for most file upload situations
+- Expressive File Handler for most file upload situations (League\FlySystem)
 - Elegant Database connections and query models
 - Mostly compliant with PSR-7 conventions
 
-The app design is borrowed partly from the Laravel Framework and it uses the Illuminate\Database package to handle database connections. It makes use of the MVC pattern and other groupings such as *Handlers* takes care of specific tasks.
+The app design is borrowed partly from the Symfony and Laravel Framework. It makes use of the MVC pattern and other groupings such as *Handlers* takes care of specific tasks.
 
 ## License
-Frontend was designed by [HTML5 UP](https://html5up.net/multiverse)
+Frontend UI was designed by [HTML5 UP](https://html5up.net/multiverse)
