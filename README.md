@@ -2,9 +2,6 @@
 
 BlogCore is a basic photo CRUD app, built using several PHP components as opposed to using a framework.
 
-## Online Demo
-
-https://tempcore.herokuapp.com/
 
 ## Local Installation
 
