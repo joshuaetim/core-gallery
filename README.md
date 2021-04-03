@@ -42,4 +42,4 @@ The app features are:
 The app design is borrowed partly from the Laravel Framework and it uses the Illuminate\Database package to handle database connections. It makes use of the MVC pattern and other groupings such as *Handlers* takes care of specific tasks.
 
 ## License
-Use anyhow you want. I don't care. Frontend was designed by [HTML5 UP](https://html5up.net/multiverse)
+Frontend was designed by [HTML5 UP](https://html5up.net/multiverse)

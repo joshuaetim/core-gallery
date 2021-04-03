@@ -6,7 +6,7 @@ use \Illuminate\Database\Capsule\Manager as Capsule;
 
 // boot connection
 
-new \BlogCore\Models\Database();
+new \BlogCore\Handlers\Database();
 
 Capsule::schema()->create('photos', function($table)
 {

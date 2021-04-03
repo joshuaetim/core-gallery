@@ -68,7 +68,7 @@ class FileHandler
      */
     public static function uploadFile($file): string
     {
-        $adapter = new \League\Flysystem\Local\LocalFilesystemAdapter(BASEPATH.'/web');
+        $adapter = new \League\Flysystem\Local\LocalFilesystemAdapter(BASEPATH.'/public');
         $filesystem = new \League\Flysystem\Filesystem($adapter);
 
         // handle upload using writeStream

@@ -13,9 +13,9 @@ class PhotoHandler extends FileHandler
      */
     public static function createThumbnail($name): bool
     {
-        $image = new \Imagick(BASEPATH.'/web/storage/'.$name);
+        $image = new \Imagick(BASEPATH.'/public/storage/'.$name);
         $image->thumbnailImage(1000, 0);
 
-        return $image->writeImage(BASEPATH.'/web/storage/thumbnails/'.$name);
+        return $image->writeImage(BASEPATH.'/public/storage/thumbnails/'.$name);
     }
 }
