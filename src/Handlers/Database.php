@@ -12,15 +12,14 @@ class Database
     {
         $capsule = new Capsule;
 
-        $DATABASE_URL = parse_url(getenv("DATABASE_URL"));
-
         $capsule->addConnection([
-            'driver'    => 'pgsql',
-            'host'      => $DATABASE_URL["host"],
-            'port'      => $DATABASE_URL["port"],
-            'database'  => ltrim($DATABASE_URL["path"], "/"), // edit for your unique database name
-            'username'  => $DATABASE_URL["user"],
-            'password'      => $DATABASE_URL["pass"],
+            'driver'    => 'mysql',
+            'host'      => '127.0.0.1',
+            'port'      => 3306,
+            'unix_socket' => getenv('DB_SOCKET'),
+            'database'  => 'blogcore', // edit for your unique database name
+            'username'  => 'root',
+            'password'      => '',
             'charset'   => 'utf8',
             'collation' => 'utf8_unicode_ci',
             'prefix'    => '',

@@ -22,7 +22,7 @@
         }
 
         .text-bg{
-            background-color: rgba(255, 255, 240, 0.8);
+            background-color: rgba(255, 255, 240, 0.6);
             padding: 10px 20px;
             color: black !important;
             font-weight: bold;
@@ -34,7 +34,7 @@
     <div id="main">
         {% for photo in photos %}
             <article class="thumb">
-                <a href="/storage/{{photo.photo}}" class="image"><img src="/storage/{{photo.photo}}" alt="" /></a>
+                <a href="https://storage.googleapis.com/photo-core.appspot.com/{{photo.photo}}" class="image"><img src="https://storage.googleapis.com/photo-core.appspot.com/{{photo.photo}}" alt="" /></a>
                 <h2 class="text-bg">{{photo.title}}</h2>
                 <p class="text-bg">{{photo.description}}.</p>
                 <p><a href="/edit/{{photo.id}}" class="action-bg">Edit</a>

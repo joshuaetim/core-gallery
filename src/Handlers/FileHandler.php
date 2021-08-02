@@ -66,7 +66,7 @@ class FileHandler
      * Upload the file to my local system
      * @param array $file
      */
-    public static function uploadFile($file): string
+    public static function uploadFileLocal($file): string
     {
         $adapter = new \League\Flysystem\Local\LocalFilesystemAdapter(BASEPATH.'/public');
         $filesystem = new \League\Flysystem\Filesystem($adapter);
@@ -84,6 +84,32 @@ class FileHandler
             throw $th;
         }
         return null;
+
+    }
+    
+        /**
+     * Upload the file to google cloud
+     * @param array $file
+     */
+    public static function uploadFile($file): string
+    {
+        $storage = new \Google\Cloud\Storage\StorageClient([
+            'projectId' => 'photo-core'
+        ]);
+
+        $bucket = $storage->bucket('photo-core.appspot.com');
+
+        // stream and name generation
+        $stream = fopen($file['tmp_name'], 'r+');
+        $prefix = substr(microtime(), -4, 4); // unique number generator
+        $name = $prefix . str_replace(' ', '_', $file['name']); // remove space
+
+        // Upload a file to the bucket.
+        $bucket->upload($stream, [
+            'name' => $name,
+        ]);
+
+        return $name;
 
     }
 }

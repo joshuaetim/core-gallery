@@ -144,8 +144,18 @@ class PhotoController extends BaseController
         $id = RequestHandler::getLastParam($request);
         new Database();
         $photo = Photo::find($id);
+        $photoLink = $photo->photo;
 
         $photo->delete();
+
+        // delete photo object in cloud storage
+        $storage = new \Google\Cloud\Storage\StorageClient([
+            'projectId' => 'photo-core'
+        ]);
+
+        $bucket = $storage->bucket('photo-core.appspot.com');
+        $object = $bucket->object($photoLink);
+        $object->delete();
 
         return new Response\RedirectResponse('/');
     }

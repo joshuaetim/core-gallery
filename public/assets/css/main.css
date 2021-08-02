@@ -1345,19 +1345,22 @@ input, select, textarea {
 
 		@media screen and (max-width: 736px) {
 
-			.poptrox-popup:before {
+			/* .poptrox-popup:before {
 				display: none;
-			}
+			} */
 
 			.poptrox-popup .caption {
-				display: none !important;
+				/* display: none !important; */
+				width: 80%;
+				padding: 1em 1em 0.1em 1em ;
+				margin: 0 0 0.5em 0;
 			}
 
-			.poptrox-popup .closer,
+			/* .poptrox-popup .closer,
 			.poptrox-popup .nav-previous,
 			.poptrox-popup .nav-next {
 				display: none !important;
-			}
+			} */
 
 		}
 

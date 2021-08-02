@@ -1,0 +1,25 @@
+runtime: php74
+
+runtime_config:
+  document_root: .
+
+handlers:
+# Serve a directory as a static resource.
+- url: /assets
+  static_dir: public/assets
+
+# Serve a directory as a static resource.
+- url: /storage
+  static_dir: public/storage
+
+# Serve images as static resources.
+- url: /(.+\.(gif|png|jpg|css|js|map|ico))$
+  static_files: \1
+  upload: .+\.(gif|png|jpg|css|js|map|ico)$
+
+# Serve your app through a front controller at index.php or public/index.php.
+- url: /.*
+  script: auto
+
+env_variables:
+  DB_SOCKET: '/cloudsql/photo-core:us-central1:photo'
