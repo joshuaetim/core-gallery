@@ -4,5 +4,6 @@ git add .
 echo "Enter commit name -->"
 read commit
 git commit -m "$commit"
-git push origin main
+git branch -M main
+git push heroku main
 echo "Operation successful"

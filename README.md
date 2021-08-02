@@ -1,6 +1,10 @@
-# BlogCore
+# Photo-Core
 
-BlogCore is a basic photo CRUD app, built using several PHP components as opposed to using a framework.
+PhotoCore is a basic photo CRUD app, built using several PHP components as opposed to using a framework.
+
+![alt](https://github.com/joshuaetim/core-gallery/blob/main/public/images/main.png?raw=true)
+
+![alt](https://github.com/joshuaetim/core-gallery/blob/main/public/images/single.png?raw=true)
 
 
 ## Local Installation
