@@ -10,15 +10,12 @@ use BlogCore\Handlers\PhotoHandler;
 use BlogCore\Handlers\RequestHandler;
 use Psr\Http\Message\ResponseInterface;
 use BlogCore\Controllers\BaseController;
+use BlogCore\Handlers\FileHandler;
+use BlogCore\Handlers\Validator;
 use Psr\Http\Message\ServerRequestInterface;
 
 class PhotoController extends BaseController
 {
-    public function index(ServerRequestInterface $request): ResponseInterface
-    {
-        // Get All Photos
-    }
-
     /**
      * Display the form for adding the image and text
      * @param ServerRequestInterface $request
@@ -36,20 +33,10 @@ class PhotoController extends BaseController
      */
     public function store(ServerRequestInterface $request): ResponseInterface
     {
-        $requiredInput = ['title', 'description'];
+        $validatorResult = Validator::validate(['title', 'description'], $request->getParsedBody());
 
-        $input = []; // finalized input array
-        $requestBody = $request->getParsedBody();
-
-        // if empty return error... else filter input
-        foreach($requiredInput as $value){
-
-            if(trim($requestBody["$value"]) == ""){
-                $errorData = "The $value must be provided";
-                return $this->sendErrorResponse('Form field error', $errorData, 422);
-            }
-
-            $input["$value"] = htmlspecialchars($requestBody["$value"]);
+        if (array_key_exists("error", $validatorResult)) {
+            return $this->sendErrorResponse("Form field error", $validatorResult["error"], 422);
         }
 
         $file = $_FILES['file'];
@@ -61,35 +48,13 @@ class PhotoController extends BaseController
             return $this->sendErrorResponse('File upload error', $errorData, 500);
         } // other errors in file upload; return error
 
-        if(PhotoHandler::verifyExtension($file, ['jpg', 'jpeg', 'png', 'gif'])){
-            
-            if(PhotoHandler::verifySize($file)){
-                // all good, upload file
-                $input['file'] = $file;
-
-                if($path = PhotoHandler::uploadFile($file)){
-                    // db store
-                    new Database();
-                    // $thumb = PhotoHandler::createThumbnail($path);
-                    $photo = Photo::create([
-                        'title' => $input['title'],
-                        'description' => $input['description'],
-                        'photo' => $path,
-                        'thumbnail' => $path
-                    ]);
-
-                    return new Response\RedirectResponse('/');
-                }
-
-                return new Response\JsonResponse($input);
-            }
-
-            return $this->sendErrorResponse('Exceeded the file limit of 1.5MB', [], 422);
+        $saveResult = $this->checkAndSendFile($file, $validatorResult);
+        
+        if ($saveResult['success']) {
+            return new Response\RedirectResponse('/');
+        } else {
+            return $this->sendErrorResponse($saveResult["message"], $saveResult["data"], 422);
         }
-
-        return $this->sendErrorResponse('File extension not supported', [
-            'data' => 'Only jpg, jpeg, png and gif are allowed'
-        ], 422);
     }
 
     /**
@@ -148,17 +113,62 @@ class PhotoController extends BaseController
 
         $photo->delete();
 
-        // delete photo object in cloud storage
-        $storage = new \Google\Cloud\Storage\StorageClient([
-            'projectId' => 'photo-core'
-        ]);
+        if(PhotoHandler::deleteFile($photoLink)) {
+            return new Response\RedirectResponse('/');
+        }
 
-        $bucket = $storage->bucket('photo-core.appspot.com');
-        $object = $bucket->object($photoLink);
-        $object->delete();
-
-        return new Response\RedirectResponse('/');
+        return new Response\TextResponse('error in deleting file');
     }
 
     // auxiliary functions
+
+    /**
+     * Check and Send Photo
+     */
+    public function checkAndSendFile($file, $input): array
+    {
+        if(PhotoHandler::verifyExtension($file, ['jpg', 'jpeg', 'png', 'gif'])){
+            
+            if(PhotoHandler::verifySize($file)){
+                // all good, upload file
+                $input['file'] = $file;
+                
+                $path = "";
+                if($_ENV["APP_ENV"] == "production"){
+                    $path = PhotoHandler::uploadFile($file);
+                }
+                else {
+                    $path = PhotoHandler::uploadFileLocal($file);
+                }
+
+                if($path){
+                    // db store
+                    new Database();
+                    // $thumb = PhotoHandler::createThumbnail($path);
+                    $photo = Photo::create([
+                        'title' => $input['title'],
+                        'description' => $input['description'],
+                        'photo' => $path,
+                        'thumbnail' => $path
+                    ]);
+
+                    return ['success' => true];
+                }
+
+                die("Failed to upload");
+            }
+            return [
+                'success' => false, 
+                'message' => 'Exceeded the file limit of 1.5MB',
+                'data' => [],
+            ];
+        }
+        else {
+            return [
+                'success' => false, 
+                'message' => 'File extension not supported',
+                'data' => 'Only jpg, jpeg, png and gif are allowed',
+            ];
+        }
+    }
 }

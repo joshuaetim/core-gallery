@@ -15,7 +15,8 @@
         "twig/twig": "^3.0",
         "illuminate/database": "^8.24",
         "league/flysystem": "^2.0",
-        "google/cloud-storage": "^1.23"
+        "google/cloud-storage": "^1.23",
+        "vlucas/phpdotenv": "*"
     },
     "autoload": {
         "psr-4": {

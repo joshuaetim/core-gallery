@@ -2,6 +2,9 @@
 
 namespace BlogCore\Handlers;
 
+use League\Flysystem\UnableToWriteFile;
+use League\Flysystem\UnableToDeleteFile;
+use League\Flysystem\FilesystemException;
 
 /**
  * This class deals with the handling of uploaded files
@@ -11,7 +14,6 @@ class FileHandler
 
     /**
      * Verify File Extension
-     * 
      * @param array $file
      */
 
@@ -80,7 +82,7 @@ class FileHandler
             $filesystem->writeStream('/storage/'.$name, $stream);
             fclose($stream);
             return $name;
-        } catch (FileSystemError | UnableToWriteFile $th) {
+        } catch (FilesystemException | UnableToWriteFile $th) {
             throw $th;
         }
         return null;
@@ -94,10 +96,10 @@ class FileHandler
     public static function uploadFile($file): string
     {
         $storage = new \Google\Cloud\Storage\StorageClient([
-            'projectId' => 'photo-core'
+            'projectId' => $_ENV["GOOGLE_STORAGE_ID"]
         ]);
 
-        $bucket = $storage->bucket('photo-core.appspot.com');
+        $bucket = $storage->bucket($_ENV["GOOGLE_STORAGE_BUCKET"]);
 
         // stream and name generation
         $stream = fopen($file['tmp_name'], 'r+');
@@ -110,6 +112,23 @@ class FileHandler
         ]);
 
         return $name;
+    }
 
+    /**
+     * Delete file from local
+     * @param string $filename
+     */
+    public static function deleteFile($filename): bool
+    {
+        $adapter = new \League\Flysystem\Local\LocalFilesystemAdapter(BASEPATH.'/public');
+        $filesystem = new \League\Flysystem\Filesystem($adapter);
+
+        try {
+            $filesystem->delete("/storage/".$filename);
+            return true;
+        } catch (FilesystemException | UnableToDeleteFile $exception) {
+            throw $exception;
+        }
+        return false;
     }
 }

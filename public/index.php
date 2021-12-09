@@ -2,12 +2,16 @@
 
 require_once dirname(__DIR__).'/vendor/autoload.php';
 
+use Dotenv\Dotenv;
 use Psr\Http\Message\ResponseInterface;
 use Laminas\Diactoros\Response;
 use Psr\Http\Message\ServerRequestInterface;
 use League\Route\Http\Exception\NotFoundException;
 
 define('BASEPATH', dirname(__DIR__));
+
+$dotenv = Dotenv::createImmutable(BASEPATH);
+$dotenv->load();
 
 $request = Laminas\Diactoros\ServerRequestFactory::fromGlobals();
 
@@ -42,6 +46,8 @@ $router->post('/add', [BlogCore\Controllers\PhotoController::class, 'store']);
 $router->post('/update/{id}', [BlogCore\Controllers\PhotoController::class, 'update']);
 
 $router->post('/delete/{id}', [BlogCore\Controllers\PhotoController::class, 'delete']);
+
+$router->get('/test', [BlogCore\Controllers\HomeController::class, 'show']);
 
 try {
     $response = $router->dispatch($request);

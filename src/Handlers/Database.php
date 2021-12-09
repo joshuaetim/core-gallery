@@ -19,7 +19,7 @@ class Database
             'unix_socket' => getenv('DB_SOCKET'),
             'database'  => 'blogcore', // edit for your unique database name
             'username'  => 'root',
-            'password'      => '',
+            'password'      => 'josh',
             'charset'   => 'utf8',
             'collation' => 'utf8_unicode_ci',
             'prefix'    => '',

@@ -20,4 +20,9 @@ class HomeController extends BaseController
 
         return ViewHandler::twig('home.html', ['title' => 'Home Page', 'photos' => $photos]);
     }
+
+    public function show(ServerRequestInterface $request): ResponseInterface
+    {
+        return new Response\TextResponse($_ENV["APP_ENV"]);
+    }
 }
